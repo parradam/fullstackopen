@@ -21,6 +21,9 @@ const App = () => {
       <Stats rating="good" count={good} />
       <Stats rating="neutral" count={neutral} />
       <Stats rating="bad" count={bad} />
+      <Stats rating="all" count={good + neutral + bad} />
+      <Stats rating="average" count={(good - bad)/(good + neutral + bad)} />
+      <Stats rating="positive" count={100 * (good)/(good + neutral + bad) + " %"} />
     </div>
   );
 }
