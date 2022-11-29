@@ -1,12 +1,16 @@
 import { useState } from "react";
 
 import Button from "./Button";
-import Stats from "./Stats";
+import Statistics from "./Statistics";
 
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+
+  const all = good + neutral + bad;
+  const average = (good - bad)/(good + neutral + bad);
+  const positive = 100 * (good)/(good + neutral + bad);
 
   return (
     <div>
@@ -18,12 +22,7 @@ const App = () => {
       </div>
 
       <h2>statistics</h2>
-      <Stats rating="good" count={good} />
-      <Stats rating="neutral" count={neutral} />
-      <Stats rating="bad" count={bad} />
-      <Stats rating="all" count={good + neutral + bad} />
-      <Stats rating="average" count={(good - bad)/(good + neutral + bad)} />
-      <Stats rating="positive" count={100 * (good)/(good + neutral + bad) + " %"} />
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive} />
     </div>
   );
 }
