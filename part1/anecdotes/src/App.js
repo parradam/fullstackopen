@@ -14,14 +14,23 @@ const App = () => {
   ]
   
   const [selected, setSelected] = useState(0)
-  const initialPoints = { }
-  const [points, setPoints] = useState(initialPoints)
+  const [points, setPoints] = useState([])
+  const anecdoteWithMaxPoints = points.reduce((prev, curr) => prev.votes > curr.votes ? prev : curr, false)
 
   const voteForAnecdote = (e) => {
-    if (e.target.id in points) {
-      setPoints(prevState => ({...prevState, [selected]: points[selected] + 1}))
+    const votedAnecdote = parseInt(e.target.id)
+    const found = points.find(obj => { return obj.id === votedAnecdote })
+
+    if (typeof found === "undefined") {
+      setPoints(prevState => [...prevState, { id: votedAnecdote, votes: 1 }])
     } else {
-      setPoints(prevState => ({...prevState, [selected]: 1}))
+      setPoints(prevState => prevState.map(obj => {
+        if (obj.id === votedAnecdote) {
+          obj.votes++
+        }
+        return obj
+      })
+      )
     }
   }
 
@@ -37,10 +46,18 @@ const App = () => {
         {anecdotes[selected]}
       </p>
       <p>
-        has {points[selected] ? points[selected] : 'no'} votes
+        has {points.find(obj => obj.id === selected) ? points.find(obj => obj.id === selected).votes : "no"} votes
       </p>
       <VoteButton handleClick={(e) => voteForAnecdote(e)} anecdote={selected} />
       <Button handleClick={() => randomiseSelection()} />
+
+      <h2>Anecdote with the most votes</h2>
+      <p>
+        {anecdoteWithMaxPoints && anecdotes[anecdoteWithMaxPoints.id]}
+      </p>
+      <p>
+        {anecdoteWithMaxPoints && "has " + anecdoteWithMaxPoints.votes + " votes"}
+      </p>
     </div>
   )
 }
