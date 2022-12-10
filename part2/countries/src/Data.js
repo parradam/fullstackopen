@@ -2,6 +2,7 @@ import React from 'react'
 import Button from './Button'
 import Flag from './Flag'
 import Languages from './Languages'
+import Weather from './Weather'
 
 function Data({ countriesToShow, handleButtonClick }) {
 
@@ -24,6 +25,7 @@ function Data({ countriesToShow, handleButtonClick }) {
                   <div>area: {country.area}</div>
                   <Languages languages={country.languages} />
                   <Flag url={country.flags.png} alt={`Flag of ${country.name.official}`} />
+                  <Weather capital={country.capital} capitalInfo={country.capitalInfo} />
                 </div>
                 ))}
             </div>
