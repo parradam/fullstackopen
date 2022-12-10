@@ -1,8 +1,9 @@
 import React from 'react'
+import Button from './Button'
 import Flag from './Flag'
 import Languages from './Languages'
 
-function Data({ countriesToShow }) {
+function Data({ countriesToShow, handleButtonClick }) {
 
   const showData = () => {
     if(countriesToShow.length > 10) {
@@ -10,7 +11,7 @@ function Data({ countriesToShow }) {
     } else if(countriesToShow.length > 1) {
         return (
           <ul>
-            {countriesToShow.map(country => <li key={country.name.official}>{country.name.official}</li>)}
+            {countriesToShow.map(country => <li key={country.name.official}>{country.name.official} <Button textToUpdate={country.name.official} handleButtonClick={handleButtonClick} /></li>)}
           </ul>
         )
     } else if(countriesToShow.length === 1) {

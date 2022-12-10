@@ -13,20 +13,22 @@ const App = () => {
     setFilter(e.target.value)
   }
 
-  // https://restcountries.com/v3.1/all
+  const handleButtonClick = (textToUpdate) => {
+    setFilter(textToUpdate)
+  }
 
   useEffect(() => {
     axios
-      .get('countries.json')
+      .get('https://restcountries.com/v3.1/all')
       .then(response => {
-        setCountries(response.data.slice(0, 200))
+        setCountries(response.data)
       })
   }, [])
 
   return (
     <div className="App">
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <Data countriesToShow={countriesToShow} />
+      <Data countriesToShow={countriesToShow} handleButtonClick={handleButtonClick} />
     </div>
   );
 }
