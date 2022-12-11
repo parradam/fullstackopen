@@ -39,9 +39,13 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat(personToAdd))
-    setNewName('')
-    setNewNumber('')
+    axios
+      .post('http://localhost:3001/persons', personToAdd)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   useEffect(() => {
