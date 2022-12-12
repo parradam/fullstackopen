@@ -25,6 +25,20 @@ const App = () => {
     setNewNumber(e.target.value)
   }
 
+  const handleDeletePerson = (id) => {
+    const personToDelete = persons.find(person => person.id === id)
+    const continueWithDelete = window.confirm(`Delete ${personToDelete.name}?`)
+    if (!continueWithDelete) return
+
+    phonebookService
+      .deletePerson(id)
+      .then(response => console.log('delete successful'))
+      .catch(e => console.log(e))
+    
+    const newPersons = persons.filter(person => person.id !== id)
+    setPersons(newPersons)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const personToAdd = {
@@ -78,6 +92,7 @@ const App = () => {
       <h3>Numbers</h3>
       <Persons
         personsToShow={personsToShow}
+        handleDeletePerson={handleDeletePerson}
       />
     </div>
   )
