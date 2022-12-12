@@ -10,7 +10,7 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-
+  
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
   const handleNameFilterChange = (e) => {
@@ -32,11 +32,24 @@ const App = () => {
 
     phonebookService
       .deletePerson(id)
-      .then(response => console.log('delete successful'))
+      .then(response => {
+        const newPersons = persons.filter(person => person.id !== id)
+        setPersons(newPersons)
+      })
       .catch(e => console.log(e))
-    
-    const newPersons = persons.filter(person => person.id !== id)
-    setPersons(newPersons)
+  }
+
+  const updatePerson = (id, personToUpdate) => {
+    const continueWithUpdate = window.confirm(`${personToUpdate.name} is already added to phonebook. Replace their details?`)
+    if (!continueWithUpdate) return
+
+    phonebookService
+      .update(id, personToUpdate)
+      .then(returnedContact => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedContact))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleSubmit = (e) => {
@@ -49,7 +62,8 @@ const App = () => {
     const personExists = persons.some(person => person.name === personToAdd.name)
 
     if (personExists) {
-      alert(`${personToAdd.name} is already added to phonebook`)
+      const personToUpdate = persons.find(person => person.name === personToAdd.name)
+      updatePerson(personToUpdate.id, personToAdd)
       return
     }
 
