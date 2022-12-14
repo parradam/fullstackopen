@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import phonebookService from './services/phonebook'
 
-import Persons from './Persons'
+import Notification from './Notification'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
+import Persons from './Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [nameFilter, setNameFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  
+  const [message, setMessage] = useState(null)
+
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
   const handleNameFilterChange = (e) => {
@@ -49,6 +51,12 @@ const App = () => {
         setPersons(persons.map(person => person.id !== id ? person : returnedContact))
         setNewName('')
         setNewNumber('')
+
+        setMessage(`${personToUpdate.name} updated`)
+
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
   }
 
@@ -73,6 +81,12 @@ const App = () => {
         setPersons(persons.concat(returnedContact))
         setNewName('')
         setNewNumber('')
+
+        setMessage(`${personToAdd.name} added to phonebook`)
+
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
   }
 
@@ -87,6 +101,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={message} />
 
       <h3>Filter</h3>
       <Filter
