@@ -38,7 +38,17 @@ const App = () => {
         const newPersons = persons.filter(person => person.id !== id)
         setPersons(newPersons)
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        const newMessage = {
+          text: `${personToDelete.name} has already been removed`,
+          error: true,
+        }
+        setMessage(newMessage)
+
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
   }
 
   const updatePerson = (id, personToUpdate) => {
@@ -52,7 +62,11 @@ const App = () => {
         setNewName('')
         setNewNumber('')
 
-        setMessage(`${personToUpdate.name} updated`)
+        const newMessage = {
+          text: `${personToUpdate.name} updated in phonebook`,
+          error: false,
+        }
+        setMessage(newMessage)
 
         setTimeout(() => {
           setMessage(null)
@@ -82,7 +96,11 @@ const App = () => {
         setNewName('')
         setNewNumber('')
 
-        setMessage(`${personToAdd.name} added to phonebook`)
+        const newMessage = {
+          text: `${personToAdd.name} added to phonebook`,
+          error: false,
+        }
+        setMessage(newMessage)
 
         setTimeout(() => {
           setMessage(null)

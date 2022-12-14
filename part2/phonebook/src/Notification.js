@@ -5,9 +5,17 @@ function Notification({ message }) {
     return null
   }
 
+  if (message.error) {
+    return (
+      <div className='error'>
+        {message.text}
+      </div>
+    )
+  }
+
   return (
     <div className='success'>
-      {message}
+      {message.text}
     </div>
   )
 }
