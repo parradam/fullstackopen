@@ -44,9 +44,22 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const person = request.body
+
+    if (!person.name || !person.number) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const nameExists = phonebook.some(p => p.name === person.name)
+    if (nameExists) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
     person.id = Math.round(Math.random() * 1000)
     phonebook = phonebook.concat(person)
-    
     response.json(person)
 })
 
