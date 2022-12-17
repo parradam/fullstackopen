@@ -40,6 +40,19 @@ app.get('/api/persons/:id', (request, response) => {
     }
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const result = phonebook.find(p => p.id === id)
+
+    if (!result) {
+        response.statusMessage = "Delete unsucessful. No person found with this ID"
+        response.status(404).end()
+    }
+
+    phonebook = phonebook.filter(p => p.id !== id)
+    response.status(204).end()
+})
+
 app.get('/info', (request, response) => {
     const report = `<div>
                         <p>Phonebook has info for ${phonebook.length} people</p>
