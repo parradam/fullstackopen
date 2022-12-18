@@ -3,7 +3,12 @@ const morgan = require('morgan')
 
 const app = express()
 
-app.use(morgan('tiny'))
+const logger = morgan.token('postData', request => {
+    if (request.method === 'POST') return JSON.stringify(request.body)
+})
+
+// app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postData'))
 app.use(express.json())
 
 let phonebook = [
