@@ -45,15 +45,9 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const result = phonebook.find(p => p.id === id)
-
-    if (result) {
-        response.json(result)
-    } else {
-        response.statusMessage = "No person found with this ID"
-        response.status(404).end()
-    }
+    Person.findById(request.params.id).then(person => {
+        response.json(person)
+    })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -72,9 +66,14 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    person.id = Math.round(Math.random() * 1000)
-    phonebook = phonebook.concat(person)
-    response.json(person)
+    const newPerson = new Person({
+        name: person.name,
+        number: person.number,
+    })
+
+    newPerson.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
