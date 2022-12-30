@@ -1,19 +1,21 @@
 require('dotenv').config()
 const express = require('express')
-const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
 const app = express()
 
-const logger = morgan.token('postData', request => {
-    if (request.method === 'POST') return JSON.stringify(request.body)
-})
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:', request.path)
+    console.log('Body:', request.body)
+    next()
+}
 
-app.use(express.static('build'))
 app.use(cors())
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postData'))
+app.use(express.static('build'))
 app.use(express.json())
+app.use(requestLogger)
 
 let phonebook = [
     { 
@@ -44,7 +46,7 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
       .then(person => {
           if (person) {
@@ -53,10 +55,7 @@ app.get('/api/persons/:id', (request, response) => {
               response.status(404).end()
           }
       })
-      .catch(error => {
-          console.log(error)
-          response.status(400).send({ error: 'incorrectly formatted ID' })
-      })
+      .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response) => {
@@ -85,14 +84,17 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
+    console.log('deleting')
     Person.findByIdAndDelete(request.params.id)
       .then(person => {
         response.status(204).end()
       })
       .catch(error => {
-        response.statusMessage = "Delete unsucessful. No person found with this ID"
-        response.status(404).end()
+        next(error)
+        // console.log(error.name, error.message)
+        // response.statusMessage = "Delete unsucessful. No person found with this ID"
+        // response.status(404).end()
       })
 })
 
@@ -104,6 +106,22 @@ app.get('/info', (request, response) => {
     
     response.send(report)
 })
+
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+
+    if (error.name === 'CastError') {
+        if (request.method === 'GET') return response.status(400).send({ error: 'incorrectly formatted ID' })
+        if (request.method === 'DELETE') {
+            response.statusMessage = "Delete unsucessful. No person found with this ID"
+            response.status(404).send()
+        }
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
