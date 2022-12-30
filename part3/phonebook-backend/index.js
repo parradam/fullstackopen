@@ -45,9 +45,18 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    Person.findById(request.params.id).then(person => {
-        response.json(person)
-    })
+    Person.findById(request.params.id)
+      .then(person => {
+          if (person) {
+              response.json(person)
+          } else {
+              response.status(404).end()
+          }
+      })
+      .catch(error => {
+          console.log(error)
+          response.status(400).send({ error: 'incorrectly formatted ID' })
+      })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -77,16 +86,14 @@ app.post('/api/persons', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const result = phonebook.find(p => p.id === id)
-
-    if (!result) {
+    Person.findByIdAndDelete(request.params.id)
+      .then(person => {
+        response.status(204).end()
+      })
+      .catch(error => {
         response.statusMessage = "Delete unsucessful. No person found with this ID"
         response.status(404).end()
-    }
-
-    phonebook = phonebook.filter(p => p.id !== id)
-    response.status(204).end()
+      })
 })
 
 app.get('/info', (request, response) => {
