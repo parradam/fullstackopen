@@ -6,9 +6,11 @@ const Person = require('./models/person')
 const app = express()
 
 const requestLogger = (request, response, next) => {
-    console.log('Method:', request.method)
-    console.log('Path:', request.path)
-    console.log('Request body:', request.body)
+    console.log(
+        '-- Method:', request.method,
+        '-- Path:', request.path,
+        '-- Request body:', request.body
+    )
     next()
 }
 
@@ -35,7 +37,7 @@ app.get('/api/persons/:id', (request, response, next) => {
       .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const person = request.body
 
     if (!person.name || !person.number) {
@@ -52,18 +54,27 @@ app.post('/api/persons', (request, response) => {
     newPerson.save().then(savedPerson => {
         response.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
     const detailsToUpdate = {
+        name: request.body.name,
         number: request.body.number,
     }
 
-    Person.findByIdAndUpdate(request.params.id, detailsToUpdate, { new: true })
+    Person.findByIdAndUpdate(
+      request.params.id,
+      detailsToUpdate,
+      { new: true,
+        runValidators: true,
+        context: 'query' }
+      )
       .then(updatedPerson => {
         response.json(updatedPerson)
       })
       .catch(error => {
+        console.log(error)
         next(error)
       })
 })
@@ -98,9 +109,14 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-    console.log(error.message)
+    console.log(error)
 
-    if (error.name === 'CastError') return response.status(400).send({ error: 'incorrectly formatted ID' })
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'incorrectly formatted ID' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+    }
+
     next(error)
 }
 

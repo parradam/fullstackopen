@@ -1,0 +1,8 @@
+PUT http://localhost:3001/api/persons/63b0c7f8b550b42b0a077973
+Content-Type: application/json
+
+// the name value <3 chars will not trigger an error, as only unique names are permitted on the front end
+{
+    "name": "ne",
+    "number": 888888889
+}

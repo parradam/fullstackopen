@@ -15,6 +15,14 @@ const App = () => {
 
   const personsToShow = persons.filter(person => person.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
+  const createNotification = (message) => {
+    setMessage(message)
+
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
   const handleNameFilterChange = (e) => {
     setNameFilter(e.target.value)
   }
@@ -43,11 +51,7 @@ const App = () => {
           text: `${personToDelete.name} has already been removed`,
           error: true,
         }
-        setMessage(newMessage)
-
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        createNotification(newMessage)
       })
   }
 
@@ -66,11 +70,14 @@ const App = () => {
           text: `${personToUpdate.name} updated in phonebook`,
           error: false,
         }
-        setMessage(newMessage)
-
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        createNotification(newMessage)
+      })
+      .catch(error => {
+        const newMessage = {
+          text: error.response.data.error,
+          error: true,
+        }
+        createNotification(newMessage)
       })
   }
 
@@ -100,11 +107,14 @@ const App = () => {
           text: `${personToAdd.name} added to phonebook`,
           error: false,
         }
-        setMessage(newMessage)
-
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        createNotification(newMessage)
+      })
+      .catch(error => {
+        const newMessage = {
+          text: error.response.data.error,
+          error: true,
+        }
+        createNotification(newMessage)
       })
   }
 
