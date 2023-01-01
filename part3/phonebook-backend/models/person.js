@@ -11,7 +11,22 @@ mongoose
   })
   .catch(error => {
     console.log('error connecting to MongoDB', error.message)
-  })
+})
+
+const numberLengthValidator = (val) => {
+  return val.length >= 8
+}
+
+const numberFormatValidator = (val) => {
+  if (val.indexOf('-') === -1) return true
+  const re = /^\d{2,3}\-\d+$/g
+  return re.test(val)
+}
+
+const numberValidators = [
+  { validator: numberLengthValidator, msg: 'Number must be at least 8 characters' },
+  { validator: numberFormatValidator, msg: 'Number is not the correct format' },
+]
 
 const personSchema = new mongoose.Schema({
     name: {
@@ -19,7 +34,10 @@ const personSchema = new mongoose.Schema({
       minLength: 3,
       required: true,
     },
-    number: String,
+    number: {
+      type: String,
+      validate: numberValidators,
+    },
 })
 
 personSchema.set('toJSON', {

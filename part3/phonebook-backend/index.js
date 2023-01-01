@@ -19,6 +19,10 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(requestLogger)
 
+const countExisting = async name => {
+    return Person.count({ name: name })
+}
+
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
         response.json(persons)
@@ -46,13 +50,23 @@ app.post('/api/persons', (request, response, next) => {
         })
     }
 
-    const newPerson = new Person({
-        name: person.name,
-        number: person.number,
-    })
+    countExisting(person.name).then(count => {
+        if (Number(count) > 0) {
+            return response.status(409).json({
+                error: `${person.name} already exists`
+            })
+        } else {
+            // TODO simplify?
+            const newPerson = new Person({
+                name: person.name,
+                number: person.number,
+            })
 
-    newPerson.save().then(savedPerson => {
-        response.json(savedPerson)
+            newPerson.save().then(savedPerson => {
+                return response.json(savedPerson)
+            })
+            .catch(error => next(error))
+        }
     })
     .catch(error => next(error))
 })
@@ -74,7 +88,6 @@ app.put('/api/persons/:id', (request, response, next) => {
         response.json(updatedPerson)
       })
       .catch(error => {
-        console.log(error)
         next(error)
       })
 })
