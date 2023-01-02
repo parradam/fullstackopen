@@ -19,40 +19,40 @@ const Person = mongoose.model('Person', personSchema)
 if (process.argv.length === 3) {
     // display all entries (if provided with node mongo.js <password>)
     mongoose
-      .connect(url)
-      .then(result => {
-        console.log('connected')
+        .connect(url)
+        .then(result => {
+            console.log('connected')
 
-        Person
-          .find({})
-          .then(persons => {
-            console.log('phonebook:')
-            persons.forEach(person => {
-                console.log(person.name, person.number)
-            })
-            mongoose.connection.close()
+            Person
+                .find({})
+                .then(persons => {
+                    console.log('phonebook:')
+                    persons.forEach(person => {
+                        console.log(person.name, person.number)
+                    })
+                    mongoose.connection.close()
+                })
         })
-      })
 } else if (process.argv.length === 5) {
     // add to DB (if provided with node mongo.js <password> "<name>"" <number>)
     const name = process.argv[3]
     const number = process.argv[4]
 
     mongoose
-      .connect(url)
-      .then(result => {
-        console.log('connected')
+        .connect(url)
+        .then(result => {
+            console.log('connected')
 
-        const person = new Person({
-            name: name,
-            number: number,
+            const person = new Person({
+                name: name,
+                number: number,
+            })
+
+            return person.save()
         })
-
-        return person.save()
-      })
-      .then(() => {
-        console.log('person saved')
-        return mongoose.connection.close()
-      })
-      .catch(err => console.log(err))
+        .then(() => {
+            console.log('person saved')
+            return mongoose.connection.close()
+        })
+        .catch(err => console.log(err))
 }

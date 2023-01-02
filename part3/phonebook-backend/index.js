@@ -31,14 +31,14 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
-      .then(person => {
-          if (person) {
-              response.json(person)
-          } else {
-              response.status(404).end()
-          }
-      })
-      .catch(error => next(error))
+        .then(person => {
+            if (person) {
+                response.json(person)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
@@ -65,10 +65,10 @@ app.post('/api/persons', (request, response, next) => {
             newPerson.save().then(savedPerson => {
                 return response.json(savedPerson)
             })
-            .catch(error => next(error))
+                .catch(error => next(error))
         }
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -78,41 +78,42 @@ app.put('/api/persons/:id', (request, response, next) => {
     }
 
     Person.findByIdAndUpdate(
-      request.params.id,
-      detailsToUpdate,
-      { new: true,
-        runValidators: true,
-        context: 'query' }
-      )
-      .then(updatedPerson => {
-        response.json(updatedPerson)
-      })
-      .catch(error => {
-        next(error)
-      })
+        request.params.id,
+        detailsToUpdate,
+        {
+            new: true,
+            runValidators: true,
+            context: 'query'
+        })
+        .then(updatedPerson => {
+            response.json(updatedPerson)
+        })
+        .catch(error => {
+            next(error)
+        })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
-      .then(person => {
-        response.status(204).end()
-      })
-      .catch(error => {
-        next(error)
-      })
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => {
+            next(error)
+        })
 })
 
 app.get('/info', (request, response, next) => {
     Person.count({})
-      .then(count => {
-          const report = `<div>
-                           <p>Phonebook has info for ${count} people</p>
-                           <p>${new Date()}<p>
-                          </div>`
+        .then(count => {
+            const report = `<div>
+                            <p>Phonebook has info for ${count} people</p>
+                            <p>${new Date()}<p>
+                            </div>`
 
-          response.send(report)
-      })
-      .catch(error => next(error))
+            response.send(report)
+        })
+        .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
