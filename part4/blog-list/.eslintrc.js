@@ -36,6 +36,6 @@ module.exports = {
             'error', { 'before': true, 'after': true }
         ],
         'no-console': 0,
-        'no-unused-vars': ['error', { 'argsIgnorePattern': 'result' }]
+        'no-unused-vars': ['error', { 'argsIgnorePattern': 'result|next' }]
     }
 }
