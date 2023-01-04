@@ -1,5 +1,13 @@
+// eslint-disable-next-line no-unused-vars
 const dummy = (blogs) => {
     return 1
 }
 
-module.exports = { dummy }
+const totalLikes = (blogs) => {
+    return blogs.reduce((sumOfLikes, blog) => sumOfLikes += blog.likes, 0)
+}
+
+module.exports = {
+    dummy,
+    totalLikes
+}
