@@ -11,8 +11,16 @@ const favoriteBlog = (blogs) => {
     return blogs.reduce((a, b) => a.likes > b.likes ? a : b, {})
 }
 
+// TODO complete 4.6-4.7
+// const mostBlogs = (blogs) => {
+//     let blogCount = _.countBy(blogs, (blog) => {
+//         return blog
+//     })
+// }
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    // mostBlogs
 }
