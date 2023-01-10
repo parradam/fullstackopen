@@ -1,0 +1,15 @@
+### removed id
+PUT http://localhost:3003/api/blogs/63bc7037471d516f7679e802 HTTP/1.1
+Content-Type: application/json
+
+{
+    "likes": 3333
+}
+
+### invalid id
+PUT http://localhost:3003/api/blogs/63bc7037471d516f7679e802111 HTTP/1.1
+Content-Type: application/json
+
+{
+    "likes": 4444
+}

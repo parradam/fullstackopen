@@ -13,7 +13,13 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    logger.error(error.message)
+    logger.error(error.name)
+
+    console.log(request.method, error.name)
+
+    if (error.name === 'CastError') {
+        return response.status(404).send({ error: 'this id could not be found' })
+    }
 
     return response.status(400).send({ error: 'an error has occurred' })
 }
