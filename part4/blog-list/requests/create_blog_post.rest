@@ -1,9 +1,22 @@
+### Valid blog
 POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
 
 {
-    "title": "This is a test post",
+    "title": "This is a third test post",
     "author": "Adam6",
     "url": "myurl.com",
-    "likes": 101
+    "likes": 500,
+    "userId": "63c71b72b58f47be52b4b53c"
+}
+
+### No likes
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "This is a second test post",
+    "author": "Adam6",
+    "url": "myurl.com",
+    "userId": "63c711bdad4b61a293824874"
 }

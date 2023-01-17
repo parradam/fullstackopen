@@ -37,11 +37,15 @@ describe('get requests', () => {
 
 describe('post requests', () => {
     test('a valid blog can be posted and is added to the database', async () => {
+        const users = await helper.usersInDb()
+        const user = users[0]
+
         const blogPost = {
             title: 'a valid blog can be posted',
             author: 'Voltaire',
             url: 'v.com',
-            likes: 9999
+            likes: 9999,
+            userId: user.id
         }
 
         await api
@@ -60,10 +64,14 @@ describe('post requests', () => {
     }, 10000)
 
     test('a blog with a missing title cannot be posted and is not added to the database', async () => {
+        const users = await helper.usersInDb()
+        const user = users[0]
+
         const blogPost = {
             author: 'url but no title',
             url: 'a.com',
-            likes: 9999
+            likes: 9999,
+            userId: user.id
         }
 
         await api
@@ -92,10 +100,14 @@ describe('post requests', () => {
     }, 100000)
 
     test('a blog with a missing likes property defaults to 0', async () => {
+        const users = await helper.usersInDb()
+        const user = users[0]
+
         const blogPost = {
             title: 'likes should be 0',
             author: 'Dave',
             url: 'v.com',
+            userId: user.id
         }
 
         const response = await api
@@ -174,7 +186,6 @@ describe('put requests', () => {
 
         const blogPostInDb = blogsAtEnd.filter(b => b.id === firstBlogId)
         expect(blogPostInDb[0]).toHaveProperty('likes', 1111)
-        expect(blogPostInDb[0]).toHaveProperty('author', 'Dave')
     }, 100000)
 
     test('updating a blog that has been deleted should return 404', async () => {
