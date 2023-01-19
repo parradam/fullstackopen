@@ -16,10 +16,21 @@ const errorHandler = (error, request, response, next) => {
     logger.error(error)
 
     if (error.name === 'CastError') {
-        return response.status(404).send({ error: 'this id could not be found' })
+        return response.status(404).send({
+            error: 'this id could not be found'
+        })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({
+            error: error.message
+        })
+    } else if (error.name === 'JsonWebTokenError') {
+        return response.status(401).json({
+            error: 'invalid or missing token'
+        })
     }
 
-    return response.status(400).send({ error: 'an error has occurred' })
+    logger.error(error.message)
+    next(error)
 }
 
 module.exports = {
