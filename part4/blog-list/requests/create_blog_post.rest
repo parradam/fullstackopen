@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFCcmFuZE5ld1VzZXJ3IiwiaWQiOiI2M2M4NmZiNWU2Y2VmYzRkOThjOTRjMjIiLCJpYXQiOjE2NzQxNzA2ODB9.UWO7shegN6uDIlLGNgZiQIOpDvZF72oerP5UCkn3pNk
 
 {
-    "title": "This is a fourth test post - user.name should be author",
+    "title": "This is a sixth test post - user.name should be author",
     "author": "Adam6",
     "url": "myurl.com",
     "likes": 500,
