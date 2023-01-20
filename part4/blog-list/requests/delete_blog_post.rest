@@ -3,6 +3,6 @@ DELETE http://localhost:3003/api/blogs/63bc7037471d516f7679e8021 HTTP/1.1
 Content-Type: application/json
 
 ### Delete a blog post
-DELETE http://localhost:3003/api/blogs/63caf07fc9c9c829354fb920 HTTP/1.1
+DELETE http://localhost:3003/api/blogs/63caf7785492055d5e0a107d HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFCcmFuZE5ld1VzZXJ3IiwiaWQiOiI2M2M4NmZiNWU2Y2VmYzRkOThjOTRjMjIiLCJpYXQiOjE2NzQxNzA2ODB9.UWO7shegN6uDIlLGNgZiQIOpDvZF72oerP5UCkn3pNk
+Authorization: bearer {{authorization}}
