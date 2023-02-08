@@ -8,7 +8,21 @@ Authorization: bearer {{authorization}}
     "author": "Adam6",
     "url": "myurl.com",
     "likes": 500,
-    "userId": "63c71b72b58f47be52b4b53c"
+    "userId": "63deec9b564dfe162ed03e09"
+}
+
+###
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFCcmFuZE5ld1VzZXJ3IiwiaWQiOiI2M2U0MjYyYzJjM2RmMzU0MDYwM2RhMzciLCJpYXQiOjE2NzU4OTY0MzZ9.z6OsMX0M7kEn2nOk0NlWoB71S0mTHixMzcPbgBjZ0tk
+
+{
+    "title": "This is a sixth test post - user.name should be author",
+    "author": "Adam6",
+    "url": "myurl.com",
+    "likes": 500,
+    "userId": "63deec9b564dfe162ed03e09"
 }
 
 ### No likes
