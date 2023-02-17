@@ -12,6 +12,7 @@ const App = () => {
 
     const [blogs, setBlogs] = useState([])
     const [newBlog, setNewBlog] = useState(initialNewBlog)
+    const [message, setMessage] = useState(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
@@ -35,7 +36,16 @@ const App = () => {
             setUsername('')
             setPassword('')
         } catch (exception) {
-            // wrong credentials
+            switch (exception.request.status) {
+                case 401:
+                    setMessage('Incorrect credentials: please try again.')
+                    break
+                default:
+                    setMessage('An unknown error has occurred.')
+            }
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
         }
     }
 
@@ -51,8 +61,32 @@ const App = () => {
             const returnedBlog = await blogService.create(newBlog)
             setBlogs((prevState) => [...prevState, returnedBlog])
             setNewBlog(initialNewBlog)
+
+            setMessage(`Blog "${returnedBlog.title}" was successfully added!`)
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
         } catch (exception) {
-            // handle error
+            switch (exception.request.status) {
+                case 400:
+                    setMessage('Please check the details you entered.')
+                    break
+                case 401:
+                    setMessage(
+                        'You do not have permission to perform this action.'
+                    )
+                    break
+                case 500:
+                    setMessage(
+                        'Oops! The blog could not be added. Please try again later.'
+                    )
+                    break
+                default:
+                    setMessage('An unknown error has occurred.')
+            }
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
         }
     }
 
@@ -96,6 +130,7 @@ const App = () => {
                     <div>
                         <button type="submit">Log in</button>
                     </div>
+                    {message ?? <div>{message}</div>}
                 </form>
             </div>
         )
@@ -152,6 +187,7 @@ const App = () => {
                 <div>
                     <button type="submit">Create</button>
                 </div>
+                {message ?? <div>{message}</div>}
             </form>
             <h3>current blogs</h3>
             {blogs.map((blog) => (
