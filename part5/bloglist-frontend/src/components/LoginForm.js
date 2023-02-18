@@ -1,4 +1,4 @@
-function Login({
+function LoginForm({
   username,
   setUsername,
   password,
@@ -7,7 +7,7 @@ function Login({
   message,
 }) {
   return (
-    <div>
+    <>
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -33,8 +33,8 @@ function Login({
         </div>
         {message ?? <div>{message}</div>}
       </form>
-    </div>
+    </>
   );
 }
 
-export default Login;
+export default LoginForm;

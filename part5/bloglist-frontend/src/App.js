@@ -3,8 +3,9 @@ import Blogs from "./components/Blogs";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import Login from "./components/Login";
+import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const initialNewBlog = {
@@ -105,29 +106,35 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-  if (!user) {
-    return (
-      <Login
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-        message={message}
-      />
-    );
-  }
   return (
     <>
-      <h2>blog site</h2>
-      {user?.username && <Logout user={user} handleLogout={handleLogout} />}
-      <BlogForm
-        newBlog={newBlog}
-        setNewBlog={setNewBlog}
-        handleSubmitBlog={handleSubmitBlog}
-        message={message}
-      />
-      <h3>current blogs</h3>
+      {user ? (
+        <>
+          <h2>blog site</h2>
+          <Logout user={user} handleLogout={handleLogout} />
+          <Togglable revealLabel={"New post"} hideLabel={"Hide form"}>
+            <BlogForm
+              newBlog={newBlog}
+              setNewBlog={setNewBlog}
+              handleSubmitBlog={handleSubmitBlog}
+              message={message}
+            />
+          </Togglable>
+        </>
+      ) : (
+        <Togglable revealLabel={"Show login"} hideLabel={"Cancel login"}>
+          <LoginForm
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+            message={message}
+          />
+        </Togglable>
+      )}
+
+      <h2>current blogs</h2>
       {blogs.length > 0 ? (
         <Blogs blogs={blogs} />
       ) : (
