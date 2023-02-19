@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blogs from "./components/Blogs";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
@@ -8,15 +8,11 @@ import Logout from "./components/Logout";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const initialNewBlog = {
-    title: "",
-    author: "",
-    url: "",
-  };
-
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState(initialNewBlog);
   const [message, setMessage] = useState(null);
+  const blogFormRef = useRef();
+
+  const [loginErrorMessage, setLoginErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -42,13 +38,13 @@ const App = () => {
     } catch (exception) {
       switch (exception.request.status) {
         case 401:
-          setMessage("Incorrect credentials: please try again.");
+          setLoginErrorMessage("Incorrect credentials: please try again.");
           break;
         default:
-          setMessage("An unknown error has occurred.");
+          setLoginErrorMessage("An unknown error has occurred.");
       }
       setTimeout(() => {
-        setMessage(null);
+        setLoginErrorMessage(null);
       }, 5000);
     }
   };
@@ -58,14 +54,12 @@ const App = () => {
     setUser(null);
   };
 
-  const handleSubmitBlog = async (event) => {
-    event.preventDefault();
-
+  const createBlog = async (newBlog) => {
     try {
       const returnedBlog = await blogService.create(newBlog);
       setBlogs((prevState) => [...prevState, returnedBlog]);
-      setNewBlog(initialNewBlog);
 
+      blogFormRef.current.toggleVisibility();
       setMessage(`Blog "${returnedBlog.title}" was successfully added!`);
       setTimeout(() => {
         setMessage(null);
@@ -112,14 +106,14 @@ const App = () => {
         <>
           <h2>blog site</h2>
           <Logout user={user} handleLogout={handleLogout} />
-          <Togglable revealLabel={"New post"} hideLabel={"Hide form"}>
-            <BlogForm
-              newBlog={newBlog}
-              setNewBlog={setNewBlog}
-              handleSubmitBlog={handleSubmitBlog}
-              message={message}
-            />
+          <Togglable
+            revealLabel={"New post"}
+            hideLabel={"Hide form"}
+            ref={blogFormRef}
+          >
+            <BlogForm createBlog={createBlog} />
           </Togglable>
+          {message ?? <div>{message}</div>}
         </>
       ) : (
         <Togglable revealLabel={"Show login"} hideLabel={"Cancel login"}>
@@ -129,7 +123,7 @@ const App = () => {
             password={password}
             setPassword={setPassword}
             handleLogin={handleLogin}
-            message={message}
+            loginErrorMessage={loginErrorMessage}
           />
         </Togglable>
       )}

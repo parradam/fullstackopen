@@ -1,4 +1,21 @@
-function BlogForm({ newBlog, setNewBlog, handleSubmitBlog, message }) {
+import { useState } from "react";
+
+const BlogForm = ({ createBlog }) => {
+  const initialNewBlog = {
+    title: "",
+    author: "",
+    url: "",
+  };
+
+  const [newBlog, setNewBlog] = useState(initialNewBlog);
+
+  const handleSubmitBlog = (event) => {
+    event.preventDefault();
+
+    createBlog(newBlog);
+    setNewBlog(initialNewBlog);
+  };
+
   return (
     <>
       <h3>create new</h3>
@@ -48,10 +65,9 @@ function BlogForm({ newBlog, setNewBlog, handleSubmitBlog, message }) {
         <div>
           <button type="submit">Create</button>
         </div>
-        {message ?? <div>{message}</div>}
       </form>
     </>
   );
-}
+};
 
 export default BlogForm;

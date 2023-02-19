@@ -4,7 +4,7 @@ function LoginForm({
   password,
   setPassword,
   handleLogin,
-  message,
+  loginErrorMessage,
 }) {
   return (
     <>
@@ -31,7 +31,7 @@ function LoginForm({
         <div>
           <button type="submit">Log in</button>
         </div>
-        {message ?? <div>{message}</div>}
+        {loginErrorMessage ?? <div>{loginErrorMessage}</div>}
       </form>
     </>
   );
