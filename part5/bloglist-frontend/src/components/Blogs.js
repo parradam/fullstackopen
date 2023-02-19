@@ -21,7 +21,7 @@ const Blogs = ({ blogs }) => {
         <div>
           URL: <a href={`http://${blog.url}`}>Visit</a>
         </div>
-        <div>Added by: {blog.user?.name && blog.user.name}</div>
+        <div>Added by: {blog.user?.name ? blog.user.name : "Unknown"}</div>
       </Togglable>
     </div>
   ));

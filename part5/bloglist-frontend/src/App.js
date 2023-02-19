@@ -57,6 +57,7 @@ const App = () => {
   const createBlog = async (newBlog) => {
     try {
       const returnedBlog = await blogService.create(newBlog);
+      returnedBlog.user = user;
       setBlogs((prevState) => [...prevState, returnedBlog]);
 
       blogFormRef.current.toggleVisibility();
