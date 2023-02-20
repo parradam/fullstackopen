@@ -17,6 +17,10 @@ const App = () => {
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
 
+    const orderedBlogs = blogs.sort((a, b) => {
+        return b.likes - a.likes
+    })
+
     const handleLogin = async (event) => {
         event.preventDefault()
 
@@ -163,7 +167,7 @@ const App = () => {
 
             <h2>current blogs</h2>
             {blogs.length > 0 ? (
-                <Blogs blogs={blogs} handleLikeBlog={handleLikeBlog} />
+                <Blogs blogs={orderedBlogs} handleLikeBlog={handleLikeBlog} />
             ) : (
                 <div>Be the first to add a blog!</div>
             )}
