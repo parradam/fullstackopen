@@ -178,7 +178,7 @@ const App = () => {
                     >
                         <BlogForm createBlog={createBlog} />
                     </Togglable>
-                    {message ?? <div>{message}</div>}
+                    {message && <div>{message}</div>}
                 </>
             ) : (
                 <Togglable

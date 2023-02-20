@@ -1,9 +1,6 @@
 import Togglable from './Togglable'
 
 const Blogs = ({ blogs, user, handleLikeBlog, handleRemoveBlog }) => {
-    console.log(user) // user.username
-    console.log(blogs) // blog.user.username
-
     const blogStyle = {
         paddingTop: 10,
         paddingLeft: 2,
