@@ -1,6 +1,9 @@
 import Togglable from './Togglable'
 
-const Blogs = ({ blogs, handleLikeBlog }) => {
+const Blogs = ({ blogs, user, handleLikeBlog, handleRemoveBlog }) => {
+    console.log(user) // user.username
+    console.log(blogs) // blog.user.username
+
     const blogStyle = {
         paddingTop: 10,
         paddingLeft: 2,
@@ -28,6 +31,16 @@ const Blogs = ({ blogs, handleLikeBlog }) => {
                 </div>
                 <div>
                     Added by: {blog.user?.name ? blog.user.name : 'Unknown'}
+                </div>
+                <div>
+                    {user &&
+                        user.username &&
+                        blog.user &&
+                        blog.user.name === user.name && (
+                            <button onClick={() => handleRemoveBlog(blog.id)}>
+                                Remove
+                            </button>
+                        )}
                 </div>
             </Togglable>
         </div>

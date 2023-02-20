@@ -120,6 +120,37 @@ const App = () => {
         }
     }
 
+    const handleRemoveBlog = async (id) => {
+        try {
+            await blogService.remove(id)
+            const updatedBlogs = blogs.filter((blog) => blog.id !== id)
+            setBlogs(updatedBlogs)
+        } catch (exception) {
+            switch (exception.request.status) {
+                case 400:
+                    setMessage(
+                        'You do not have permission to perform this action.'
+                    )
+                    break
+                case 401:
+                    setMessage(
+                        'You do not have permission to perform this action.'
+                    )
+                    break
+                case 500:
+                    setMessage(
+                        'Oops! The blog could not be delete. Please try again later.'
+                    )
+                    break
+                default:
+                    setMessage('An unknown error has occurred.')
+            }
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
+        }
+    }
+
     useEffect(() => {
         const loggedInBlogUserJSON =
             window.localStorage.getItem('loggedInBlogUser')
@@ -167,7 +198,12 @@ const App = () => {
 
             <h2>current blogs</h2>
             {blogs.length > 0 ? (
-                <Blogs blogs={orderedBlogs} handleLikeBlog={handleLikeBlog} />
+                <Blogs
+                    blogs={orderedBlogs}
+                    user={user}
+                    handleLikeBlog={handleLikeBlog}
+                    handleRemoveBlog={handleRemoveBlog}
+                />
             ) : (
                 <div>Be the first to add a blog!</div>
             )}
