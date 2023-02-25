@@ -19,7 +19,10 @@ const Togglable = forwardRef((props, refs) => {
             >
                 {props.revealLabel || 'Show'}
             </button>
-            <div style={{ display: visible ? '' : 'none' }}>
+            <div
+                style={{ display: visible ? '' : 'none' }}
+                className="togglableContent"
+            >
                 {props.children}
             </div>
             <button
