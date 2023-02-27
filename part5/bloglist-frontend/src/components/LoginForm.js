@@ -15,6 +15,7 @@ function LoginForm({
                 <div>
                     <label htmlFor="username">Username</label>
                     <input
+                        id="username"
                         type="text"
                         value={username}
                         name="Username"
@@ -24,6 +25,7 @@ function LoginForm({
                 <div>
                     <label htmlFor="password">Password</label>
                     <input
+                        id="password"
                         type="password"
                         value={password}
                         name="Password"
@@ -31,7 +33,9 @@ function LoginForm({
                     />
                 </div>
                 <div>
-                    <button type="submit">Log in</button>
+                    <button id="login-button" type="submit">
+                        Log in
+                    </button>
                 </div>
                 {loginErrorMessage && <div>{loginErrorMessage}</div>}
             </form>
