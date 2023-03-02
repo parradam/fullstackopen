@@ -10,7 +10,7 @@ const Blogs = ({ blogs, user, handleLikeBlog, handleRemoveBlog }) => {
     }
 
     return blogs.map((blog) => (
-        <div key={blog.id} style={blogStyle}>
+        <div className="blog" key={blog.id} style={blogStyle}>
             <div>
                 {blog.title} - {blog.author}
             </div>
@@ -18,6 +18,7 @@ const Blogs = ({ blogs, user, handleLikeBlog, handleRemoveBlog }) => {
                 <div>
                     Likes: {blog.likes}{' '}
                     <button
+                        id="like-button"
                         onClick={() => handleLikeBlog(blog.id, blog.likes + 1)}
                     >
                         Like
@@ -34,7 +35,10 @@ const Blogs = ({ blogs, user, handleLikeBlog, handleRemoveBlog }) => {
                         user.username &&
                         blog.user &&
                         blog.user.name === user.name && (
-                            <button onClick={() => handleRemoveBlog(blog.id)}>
+                            <button
+                                id="remove-button"
+                                onClick={() => handleRemoveBlog(blog.id)}
+                            >
                                 Remove
                             </button>
                         )}
