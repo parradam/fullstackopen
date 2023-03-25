@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { setNotification, removeNotification } from './notificationSlice'
 
 const anecdotesAtStart = [
     'If it hurts, do it more often',
@@ -43,6 +44,26 @@ const anecdotesSlice = createSlice({
         },
     },
 })
+
+export const handleVote = ({ id, message }) => {
+    return (dispatch) => {
+        dispatch(addVote(id))
+        dispatch(setNotification(message))
+        setTimeout(() => {
+            dispatch(removeNotification())
+        }, 5000)
+    }
+}
+
+export const handleAddAnecdote = ({ content, message }) => {
+    return (dispatch) => {
+        dispatch(createAnecdote(content))
+        dispatch(setNotification(message))
+        setTimeout(() => {
+            dispatch(removeNotification())
+        }, 5000)
+    }
+}
 
 export const { createAnecdote, addVote } = anecdotesSlice.actions
 export default anecdotesSlice.reducer
