@@ -1,6 +1,5 @@
 import { handleVote } from '../reducers/anecdotesSlice'
 import { useSelector, useDispatch } from 'react-redux'
-// import { setNotification } from '../reducers/notificationSlice'
 
 const AnecdoteList = () => {
     const anecdotes = useSelector((state) =>

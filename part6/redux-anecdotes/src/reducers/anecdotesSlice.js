@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { setNotification, removeNotification } from './notificationSlice'
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
 const anecdotesSlice = createSlice({
     name: 'anecdotes',
     initialState: [],
@@ -11,12 +9,7 @@ const anecdotesSlice = createSlice({
             return action.payload
         },
         createAnecdote(state, action) {
-            const content = action.payload
-            state.push({
-                content,
-                id: getId(),
-                votes: 0,
-            })
+            state.push(action.payload)
         },
         addVote(state, action) {
             const id = action.payload
@@ -39,9 +32,9 @@ export const handleVote = ({ id, message }) => {
     }
 }
 
-export const handleAddAnecdote = ({ content, message }) => {
+export const addAnecdoteAndNotify = ({ newAnecdote, message }) => {
     return (dispatch) => {
-        dispatch(createAnecdote(content))
+        dispatch(createAnecdote(newAnecdote))
         dispatch(setNotification(message))
         setTimeout(() => {
             dispatch(removeNotification())
