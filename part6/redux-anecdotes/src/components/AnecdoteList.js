@@ -1,4 +1,4 @@
-import { handleVote } from '../reducers/anecdotesSlice'
+import { addVote } from '../reducers/anecdotesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteList = () => {
@@ -20,16 +20,7 @@ const AnecdoteList = () => {
                     <div>{anecdote.content}</div>
                     <div>
                         has {anecdote.votes}
-                        <button
-                            onClick={() =>
-                                dispatch(
-                                    handleVote({
-                                        id: anecdote.id,
-                                        message: `You voted for: ${anecdote.content}`,
-                                    })
-                                )
-                            }
-                        >
+                        <button onClick={() => dispatch(addVote(anecdote.id))}>
                             vote
                         </button>
                     </div>
