@@ -6,8 +6,7 @@ import Notification from './components/Notification'
 
 const App = () => {
     const result = useQuery('anecdotes', getAnecdotes)
-    const anecdotes = result.data
-    console.log(anecdotes)
+    const anecdotes = result.data ?? []
 
     const handleVote = (anecdote) => {
         console.log('vote')
