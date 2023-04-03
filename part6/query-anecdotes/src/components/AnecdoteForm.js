@@ -17,9 +17,21 @@ const AnecdoteForm = () => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-        newAnecdoteMutation.mutate({ content, votes: 0 })
-        const message = `You added: ${content}`
-        dispatch({ type: 'ADD_NOTIFICATION', payload: message })
+        newAnecdoteMutation.mutate(
+            { content, votes: 0 },
+            {
+                onError: (error) => {
+                    dispatch({
+                        type: 'ADD_NOTIFICATION',
+                        payload: error.response.data.error,
+                    })
+                },
+                onSuccess: () => {
+                    const message = `You added: ${content}`
+                    dispatch({ type: 'ADD_NOTIFICATION', payload: message })
+                },
+            }
+        )
     }
 
     return (
