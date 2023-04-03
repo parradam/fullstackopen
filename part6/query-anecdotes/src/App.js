@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useNotificationDispatch } from './NotificationContext'
 import { getAnecdotes, voteAnecdote } from './requests'
 
 import AnecdoteForm from './components/AnecdoteForm'
@@ -15,8 +16,12 @@ const App = () => {
         },
     })
 
+    const dispatch = useNotificationDispatch()
+
     const handleVote = (anecdote) => {
         voteAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+        const message = `You voted for: ${anecdote.content}`
+        dispatch({ type: 'ADD_NOTIFICATION', payload: message })
     }
 
     if (result.isLoading) {
