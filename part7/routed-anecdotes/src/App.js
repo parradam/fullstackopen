@@ -99,33 +99,41 @@ const CreateNew = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         props.addNew({
-            content: content.value,
-            author: author.value,
-            info: info.value,
+            content: content.attrs.value,
+            author: author.attrs.value,
+            info: info.attrs.value,
             votes: 0,
         })
-        props.setNotification(`${content.value} created!`)
+        props.setNotification(`${content.attrs.value} created!`)
         setTimeout(() => props.setNotification(null), 5000)
         navigate('/')
+    }
+
+    const handleReset = (e) => {
+        e.preventDefault()
+        content.reset()
+        author.reset()
+        info.reset()
     }
 
     return (
         <div>
             <h2>create a new anecdote</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} onReset={handleReset}>
                 <div>
                     content
-                    <input {...content} />
+                    <input {...content.attrs} />
                 </div>
                 <div>
                     author
-                    <input {...author} />
+                    <input {...author.attrs} />
                 </div>
                 <div>
                     url for more info
-                    <input {...info} />
+                    <input {...info.attrs} />
                 </div>
                 <button>create</button>
+                <button type="reset">reset</button>
             </form>
         </div>
     )
